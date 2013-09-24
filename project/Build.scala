@@ -46,7 +46,7 @@ object ProguardPlugin extends Build {
 		organization := "com.github.siasia",
 		version <<= sbtVersion(_ + "-0.1.1"),
 		libraryDependencies += "net.sf.proguard" % "proguard-base" % "4.6",
-		scalacOptions += "-deprecation",
+		scalacOptions ++= Seq("-deprecation", "-feature"),
 		publishMavenStyle := true,
 		publishTo <<= (version) {
 			version: String =>

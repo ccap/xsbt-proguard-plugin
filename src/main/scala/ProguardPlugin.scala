@@ -7,6 +7,8 @@ import proguard.{Configuration=>ProGuardConfiguration, ProGuard, ConfigurationPa
 
 import java.io.File
 
+import language._
+
 object ProguardPlugin extends Plugin {
 	def keepLimitedSerializability = """
 	-keepclassmembers class * implements java.io.Serializable {
@@ -52,15 +54,15 @@ object ProguardPlugin extends Plugin {
 	val proguardInJarsTask = TaskKey[Seq[File]]("proguard-in-jars-task")
 	val proguardLibraryJars = TaskKey[Seq[File]]("proguard-library-jars")
 
-	def proguardInJarsTaskImpl: Initialize[Task[Seq[File]]] = {
+	def proguardInJarsTaskImpl: Def.Initialize[Task[Seq[File]]] = {
 		(dependencyClasspath in Runtime, proguardInJars, proguardLibraryJars) map {
 			(dc, pij, plj) =>
 				import Build.data
-			data(dc).filterNot(plj.contains) ++ pij
+			Attributed.data(dc).filterNot(plj.contains) ++ pij
 		}
 	} 
 
-	def proguardArgsTask: Initialize[Task[List[String]]] = {
+	def proguardArgsTask: Def.Initialize[Task[List[String]]] = {
 		(proguardLibraryJars, proguardInJarsTask, artifactPath in (Compile, packageBin), makeInJarFilter, minJarPath, proguardDefaultArgs, proguardOptions, packageBin in Compile, streams) map {
 			(plj, pij, jp, mijf, mjp, pda, po, pb, s) =>
 				val proguardInJarsArg = {
