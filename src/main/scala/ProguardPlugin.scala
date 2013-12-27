@@ -6,6 +6,7 @@ import Keys._
 import proguard.{Configuration=>ProGuardConfiguration, ProGuard, ConfigurationParser}
 
 import java.io.File
+import java.util.Properties
 
 import language._
 
@@ -82,7 +83,7 @@ object ProguardPlugin extends Plugin {
 
 	def proguardTask(args: List[String], bd: File) {
 		val config = new ProGuardConfiguration
-		new ConfigurationParser(args.toArray[String], bd).parse(config)
+		new ConfigurationParser(args.toArray[String], bd, new Properties()).parse(config)
 		new ProGuard(config).execute
 	}
 
