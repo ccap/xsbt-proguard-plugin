@@ -68,7 +68,7 @@ object ProguardPlugin extends Plugin {
 			(plj, pij, jp, mijf, mjp, pda, po, pb, s) =>
 				val proguardInJarsArg = {
 					val inPaths = pij.foldLeft(Map.empty[String, File])((m, p) => m + ((if (p.getName.endsWith("classes")) p.getAbsolutePath else p.getName) -> p)).values.iterator
-					"-injars" :: (List(jp.escaped).iterator ++ inPaths.map(p => p.escaped+"("+mijf(p.asFile.getName)+")")).mkString(File.pathSeparator) :: Nil
+					"-injars" :: (/* List(jp.escaped).iterator ++ */ inPaths.map(p => p.escaped+"("+mijf(p.asFile.getName)+")")).mkString(File.pathSeparator) :: Nil
 				}
 			val proguardOutJarsArg = "-outjars" :: mjp.escaped :: Nil
 			val proguardLibJarsArg = {
